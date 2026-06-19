@@ -6,8 +6,16 @@
     <title>Tuanjie WebGL Player | My project</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
+    <style>
+      #version-badge {
+        position: fixed; top: 8px; left: 8px;
+        color: rgba(255,255,255,0.5); font: 12px monospace;
+        z-index: 999; pointer-events: none;
+      }
+    </style>
   </head>
   <body>
+    <div id="version-badge">v0.2.1</div>
     <div id="tuanjie-container" class="tuanjie-desktop">
       <canvas id="tuanjie-canvas" width=960 height=600 tabindex="-1"></canvas>
       <div id="tuanjie-loading-bar">
