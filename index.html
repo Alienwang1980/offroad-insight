@@ -3,13 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Offroad Insight</title>
+    <title>Tuanjie WebGL Player | Offroad Insight</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
-  
-
-
-<style>
+  <style>
 /* ===== Offroad Insight Touch Overlay ===== */
 
 html, body { margin: 0; padding: 0; background: #000; height: 100%; overflow: hidden; }
@@ -85,7 +82,7 @@ body.oi-fullscreen #tuanjie-canvas { width: 100% !important; height: 100% !impor
   position: absolute;
   top: calc(clamp(24px, 4.5vw, 38px) + 3vh);
   left: 2vw; right: 2vw;
-  bottom: calc(28vh + 3vh);
+  bottom: calc(22vh + 3vh);
   z-index: 5;
   pointer-events: none;
 }
@@ -93,17 +90,19 @@ body.oi-fullscreen #tuanjie-canvas { width: 100% !important; height: 100% !impor
 /* BOTTOM BAR */
 #oi-bottom-bar {
   position: absolute; left: 0; right: 0; bottom: 0;
-  height: 28vh; display: flex;
+  height: 22vh; display: flex;
   z-index: 20;
+  pointer-events: none;
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 /* STEERING ZONE */
 #oi-steer-zone {
-  flex: 0 0 50%; height: 100%;
+  flex: 0 0 33%; height: 100%;
   position: relative;
   display: flex; align-items: center; justify-content: center;
 }
+#oi-steer-zone > * { pointer-events: auto; }
 #oi-joystick-base {
   position: absolute;
   border-radius: 50%;
@@ -127,18 +126,20 @@ body.oi-fullscreen #tuanjie-canvas { width: 100% !important; height: 100% !impor
 
 /* DRIVE ZONE */
 #oi-drive-zone {
-  flex: 0 0 50%; height: 100%;
+  flex: 0 0 33%; height: 100%;
   display: flex; align-items: center; justify-content: space-evenly;
+  margin-left: auto;
 }
-#oi-drive-left { display: flex; flex-direction: column; align-items: center; gap: 1.5vh; }
+#oi-drive-left { display: flex; flex-direction: column; align-items: center; gap: 1.5vh; padding-left: 3vw; }
 #oi-drive-right { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 1.5vw; }
+#oi-drive-zone > * { pointer-events: auto; }
 
 .oi-sm-btn {
-  width: 11vh; height: 11vh; max-width: 68px; max-height: 68px;
-  min-width: 36px; min-height: 36px;
+  width: 8vh; height: 8vh; max-width: 52px; max-height: 52px;
+  min-width: 30px; min-height: 30px;
   border-radius: 50%; border: 1px solid rgba(255,255,255,0.18);
   background: rgba(20,20,20,0.5); color: rgba(255,255,255,0.7);
-  font-size: 12px;
+  font-size: 11px;
 }
 .oi-brk-btn {
   width: 15vh; height: 15vh; max-width: 90px; max-height: 90px;
@@ -202,8 +203,6 @@ body.oi-kb-active #oi-overlay { display: none !important; }
 </div>
 <!-- /Offroad Insight Overlay HTML -->
 
-
-
       <div id="tuanjie-loading-bar">
         <div id="tuanjie-logo"></div>
         <div id="tuanjie-progress-bar-empty">
@@ -214,40 +213,8 @@ body.oi-kb-active #oi-overlay { display: none !important; }
       <div id="tuanjie-footer">
         <div id="tuanjie-webgl-logo"></div>
         <div id="tuanjie-fullscreen-button"></div>
-        <div id="tuanjie-build-title"><img src="TemplateData/offroad_logo_adventure.svg" alt="Offroad Insight"></div>
+        <div id="tuanjie-build-title">Offroad Insight</div>
       </div>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
     
 </div><!-- /oi-wrapper -->
     </div>
@@ -289,15 +256,14 @@ body.oi-kb-active #oi-overlay { display: none !important; }
       var buildUrl = "Build";
       var loaderUrl = buildUrl + "/WebGL.loader.js";
       var config = {
-        dataUrl: buildUrl + "/WebGL.data.unityweb?v=cp18",
-        frameworkUrl: buildUrl + "/WebGL.framework.js.unityweb?v=cp18",
-        codeUrl: buildUrl + "/WebGL.wasm.unityweb?v=cp18",
+        dataUrl: buildUrl + "/WebGL.data.unityweb",
+        frameworkUrl: buildUrl + "/WebGL.framework.js.unityweb",
+        codeUrl: buildUrl + "/WebGL.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "OffroadInsight",
         productName: "Offroad Insight",
         productVersion: "1.0",
         showBanner: unityShowBanner,
-        downloadTimeout: 120,
       };
 
       // By default Tuanjie keeps WebGL canvas render target size matched with
@@ -349,7 +315,9 @@ body.oi-kb-active #oi-overlay { display: none !important; }
                 window.__tuanjieInstance = tuanjieInstance;
                 if (window.__oi_init) window.__oi_init(tuanjieInstance);
                 loadingBar.style.display = "none";
-                // Unity fullscreen button hidden via CSS — we use oi-btn-fs
+                fullscreenButton.onclick = () => {
+                  tuanjieInstance.SetFullscreen(1);
+                };
               }).catch((message) => {
                 alert(message);
               });
@@ -359,9 +327,6 @@ body.oi-kb-active #oi-overlay { display: none !important; }
 
     </script>
   
-
-
-
 <script>
 // ===== Offroad Insight Touch Overlay JS =====
 (function() {
@@ -411,7 +376,7 @@ body.oi-kb-active #oi-overlay { display: none !important; }
 
   function joyInit() {
     // CSS pixel coords (stable, unaffected by wrapper scale transform)
-    joyCx = joyZone.offsetWidth * 0.35;
+    joyCx = joyZone.offsetWidth * 0.3;
     joyCy = joyZone.offsetHeight * 0.5;
     joyBase.style.left = joyCx + 'px';
     joyBase.style.top  = joyCy + 'px';
