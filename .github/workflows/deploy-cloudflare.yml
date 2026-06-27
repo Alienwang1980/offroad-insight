@@ -11,16 +11,21 @@ jobs:
         run: |
           cd Build/chunks
           # Reassemble data.unityweb
-          for f in $(python3 -c "import json; print(' '.join(json.load(open('manifest.json'))['data']))"); do
-            cat "$f" >> ../WebGL.data.unityweb
+          for f in $(python3 -c "import json; print(' '.join(json.load(open('data_manifest.json'))['chunks']))"); do
+            cat "$f" >> ../WebGL.data.unityweb.bin
           done
-          echo "Data size: $(stat -c%s ../WebGL.data.unityweb) bytes"
+          echo "Data.bin size: $(stat -c%s ../WebGL.data.unityweb.bin) bytes"
           
-          # Reassemble wasm.unityweb
-          for f in $(python3 -c "import json; print(' '.join(json.load(open('manifest.json'))['wasm']))"); do
-            cat "$f" >> ../WebGL.wasm.unityweb
-          done
-          echo "Wasm size: $(stat -c%s ../WebGL.wasm.unityweb) bytes"
+          # Reassemble wasm.unityweb (needs wasm manifest - use old chunks for now)
+          if [ -f wasm_manifest.json ]; then
+            for f in $(python3 -c "import json; print(' '.join(json.load(open('wasm_manifest.json'))['chunks']))"); do
+              cat "$f" >> ../WebGL.wasm.unityweb.bin
+            done
+          fi
+          echo "Wasm.bin size: $(stat -c%s ../WebGL.wasm.unityweb.bin) bytes"
+          
+          # Remove old .unityweb static files so functions take over
+          rm -f ../WebGL.data.unityweb ../WebGL.wasm.unityweb
       
       - name: Deploy to Cloudflare Pages
         env:
