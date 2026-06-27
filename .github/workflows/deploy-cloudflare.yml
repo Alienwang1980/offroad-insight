@@ -6,6 +6,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      
+      - name: Reassemble chunked files
+        run: |
+          cd Build/chunks
+          # Reassemble data.unityweb
+          for f in $(python3 -c "import json; print(' '.join(json.load(open('manifest.json'))['data']))"); do
+            cat "$f" >> ../WebGL.data.unityweb
+          done
+          echo "Data size: $(stat -c%s ../WebGL.data.unityweb) bytes"
+          
+          # Reassemble wasm.unityweb
+          for f in $(python3 -c "import json; print(' '.join(json.load(open('manifest.json'))['wasm']))"); do
+            cat "$f" >> ../WebGL.wasm.unityweb
+          done
+          echo "Wasm size: $(stat -c%s ../WebGL.wasm.unityweb) bytes"
+      
       - name: Deploy to Cloudflare Pages
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
