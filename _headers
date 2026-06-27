@@ -1,2 +1,11 @@
-/Build/*
+/Build/WebGL.wasm.unityweb
+  Content-Encoding: br
+  Cache-Control: no-transform, public, max-age=86400
+
+/Build/WebGL.data.unityweb
+  Content-Encoding: br
+  Cache-Control: no-transform, public, max-age=86400
+
+/Build/WebGL.framework.js.unityweb
+  Content-Encoding: br
   Cache-Control: no-transform, public, max-age=86400
